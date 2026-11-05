@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local environment
+.venv/
+venv/
+.env
+.env.*
+
+# Test artifacts
+test-results/
+reports/
+
+# Local documents and generated output (keep folders only)
+*.pdf
+input/*
+output/*
+!input/.gitkeep
+!output/.gitkeep
+
+# Secrets
+.streamlit/secrets.toml
+*.pem
+*.key
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
