@@ -1,89 +1,218 @@
-# PDF to Markdown
+# 📄 PDF to Markdown Converter
 
-A small Streamlit web app that converts a PDF into Markdown using [Microsoft MarkItDown](https://github.com/microsoft/markitdown). Upload a PDF, preview the result, and download it as a `.md` file.
+## 🌐 Live Application
 
-## Features
+**Try the application online:**
 
-- Single PDF upload (max 25 MB)
-- Structural PDF validation: corrupted or malformed files are rejected with a clear error
-- Markdown preview and `.md` download
-- Batch CLI script (`convert.py`) for converting every PDF in `input/`
-- Headless Playwright end-to-end tests with HTML reporting
+https://kotha-pdf-to-markdown.streamlit.app
 
-## Prerequisites
+Upload a PDF, convert it to Markdown, preview the result, and download the `.md` file.
 
-- Python 3.10+ (developed on 3.13)
-- Windows, macOS, or Linux
+**Maximum upload size:** 25 MB.
 
-## Local setup
+A lightweight, browser-based application that converts PDF documents into clean Markdown using **Microsoft MarkItDown**.
+
+Built with **Python and Streamlit**, the application runs locally and provides a simple drag-and-drop interface for uploading, converting, previewing, and downloading Markdown files.
+
+## ✨ Features
+
+- **Simple PDF Upload** — Drag and drop or browse to upload one PDF at a time.
+- **One-Click Conversion** — Convert PDF documents to Markdown using Microsoft MarkItDown.
+- **Markdown Preview** — Review the converted content before downloading.
+- **Markdown Download** — Download the result as a `.md` file.
+- **PDF Validation** — Detect malformed, corrupted, and unsupported PDF files.
+- **File Size Limit** — Maximum 25 MB per PDF, with no fixed page-count limit.
+- **Local Processing** — Run the application on your own computer without a cloud service.
+- **Automated Testing** — End-to-end browser tests using Playwright and pytest.
+
+## 🛠 Technology Stack
+
+| Component | Technology |
+|---|---|
+| Language | Python 3.13.1 (tested) |
+| Web Framework | Streamlit 1.66.1 |
+| PDF Conversion | Microsoft MarkItDown 0.1.9 |
+| PDF Validation | pdfminer.six |
+| Automated Testing | Playwright + pytest |
+| Version Control | Git / GitHub |
+
+## 🏗 Architecture
+
+```text
+User (Web Browser)
+        |
+        v
+Streamlit Web Interface
+        |
+        v
+PDF Upload (Maximum 25 MB)
+        |
+        v
+PDF Structure Validation
+        |
+        v
+Microsoft MarkItDown
+        |
+        v
+Markdown Preview
+        |
+        v
+Download .md File
+```
+
+The application uses temporary files during conversion. It does not require a database or permanent storage of uploaded PDFs.
+
+## 📁 Project Structure
+
+```text
+pdf-to-markdown/
+├── app.py                  # Streamlit web application
+├── convert.py              # Command-line batch converter
+├── requirements.txt        # Production dependencies
+├── requirements-dev.txt    # Testing dependencies
+├── pytest.ini              # Test configuration
+├── .gitignore
+├── README.md
+├── input/                  # Local PDF input folder
+├── output/                 # Local Markdown output folder
+└── tests/
+    ├── conftest.py         # Test fixtures
+    └── test_app_e2e.py     # Playwright E2E tests
+```
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Python (tested with 3.13.1)
+- Git (optional for local execution)
+- A modern web browser
+
+### 1. Clone the repository
+
+Once published on GitHub:
 
 ```bash
-python -m venv .venv
-# Windows
-.venv\Scripts\activate
-# macOS / Linux
-source .venv/bin/activate
-
-pip install -r requirements.txt
+git clone <YOUR-REPOSITORY-URL>
+cd pdf-to-markdown
 ```
 
-## Run the app
+Alternatively, open the project folder directly in VS Code.
 
-```bash
-streamlit run app.py
+### 2. Create a virtual environment
+
+```powershell
+py -m venv .venv
 ```
 
-Open http://localhost:8501.
+### 3. Install dependencies
 
-### Batch conversion (optional)
-
-Put PDFs in `input/` and run:
-
-```bash
-python convert.py
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-Markdown files are written to `output/`. Both folders are git-ignored apart from a placeholder.
+### 4. Start the application
 
-## End-to-end tests
-
-Tests use pytest and Playwright (headless Chromium) against the running app at `http://localhost:8501`. Test PDFs are generated at runtime, so no documents are stored in the repository.
-
-```bash
-pip install -r requirements-dev.txt
-python -m playwright install chromium
-
-# Terminal 1
-streamlit run app.py --server.headless true
-
-# Terminal 2
-python -m pytest
+```powershell
+.\.venv\Scripts\python.exe -m streamlit run app.py
 ```
 
-| ID | Scenario |
-|----|----------|
-| TC-01 | Page loads with title, description, uploader, footer |
-| TC-02 | Valid PDF upload shows file name and Convert button |
-| TC-03 | Conversion shows success message and Markdown preview |
-| TC-04 | Download returns a `.md` file with expected content |
-| TC-05 | Non-PDF files are rejected |
-| TC-06 | PDFs over 25 MB are rejected |
-| TC-07 | Corrupted PDFs show a conversion error |
-| TC-08 | Replacing or removing the file clears the previous result |
+Open your browser at:
 
-Outputs:
+**http://localhost:8501**
 
-- HTML report: `reports/report.html`
-- Failure screenshots and traces: `test-results/` (open with `python -m playwright show-trace <path>/trace.zip`)
+### 5. Convert a PDF
 
-## Project structure
+1. Upload a PDF using drag-and-drop or the file browser.
+2. Click **Convert to Markdown**.
+3. Review the Markdown preview.
+4. Click **Download Markdown (.md)**.
 
+Only one PDF can be uploaded at a time.
+
+## 💻 Command-Line Conversion
+
+The project also includes a batch converter for local use.
+
+Place PDF files inside the `input/` directory and run:
+
+```powershell
+.\.venv\Scripts\python.exe convert.py
 ```
-app.py                 Streamlit application
-convert.py             Batch conversion script
-requirements.txt       Runtime dependencies
-requirements-dev.txt   Test dependencies
-pytest.ini             pytest / Playwright configuration
-tests/                 Playwright end-to-end tests
-input/  output/        Local working folders (contents git-ignored)
+
+Converted Markdown files will appear in the `output/` directory.
+
+## 🧪 Automated Testing
+
+The project uses Python Playwright and pytest for browser-based end-to-end testing.
+
+### Install testing dependencies
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
+.\.venv\Scripts\python.exe -m playwright install chromium
 ```
+
+### Run the tests
+
+Start the Streamlit application first, then execute in a separate terminal:
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest -v
+```
+
+### Test coverage
+
+| Test ID | Scenario |
+|---|---|
+| TC-01 | Application loads successfully |
+| TC-02 | Valid PDF upload |
+| TC-03 | PDF-to-Markdown conversion |
+| TC-04 | Markdown file download |
+| TC-05 | Unsupported file rejection |
+| TC-06 | PDF exceeding 25 MB |
+| TC-07 | Corrupted PDF validation |
+| TC-08 | Upload replacement and result reset |
+
+**Latest reported local execution:** 8 passed, 0 failed, 0 skipped.
+
+Test reports and failure artifacts are generated locally and excluded from version control.
+
+## ⚠️ Known Limitations
+
+- Scanned or image-only PDFs may produce incomplete or empty Markdown without OCR.
+- Complex layouts, diagrams, and tables may not be preserved accurately.
+- Password-protected PDFs requiring a password are not supported.
+- Some structurally unusual PDFs may fail validation.
+- The application currently runs locally; public hosting is planned.
+
+## 🗺 Roadmap
+
+- [x] PDF-to-Markdown conversion engine
+- [x] Streamlit web interface
+- [x] Single-PDF upload and download
+- [x] PDF validation and file-size restriction
+- [x] Playwright automated testing
+- [ ] GitHub repository publication
+- [ ] GitHub Actions CI pipeline
+- [ ] Cloud deployment
+- [ ] Improved support for scanned PDFs and OCR
+- [ ] Conversion-quality and token-usage analysis
+
+## 🔒 Privacy
+
+When running locally, uploaded PDFs are processed on the local machine. The application does not require an external AI API or cloud-based conversion service.
+
+Avoid uploading confidential documents to any future public deployment without reviewing the hosting environment and appropriate security controls.
+
+## 🙏 Acknowledgments
+
+PDF conversion is powered by [Microsoft MarkItDown](https://github.com/microsoft/markitdown), an open-source document conversion utility.
+
+Web interface built with [Streamlit](https://streamlit.io/).
+
+Automated browser testing powered by [Playwright](https://playwright.dev/python/).
+
+---
+
+**Project status:** Version 1.0 — Local application tested and ready for GitHub preparation.
