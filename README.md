@@ -20,6 +20,7 @@ Built with **Python and Streamlit**, the application runs locally and provides a
 - **One-Click Conversion** — Convert PDF documents to Markdown using Microsoft MarkItDown.
 - **Markdown Preview** — Review the converted content before downloading.
 - **Markdown Download** — Download the result as a `.md` file.
+- **Convert Another PDF** — Reset the page after a conversion and convert the next PDF without refreshing the browser.
 - **PDF Validation** — Detect malformed, corrupted, and unsupported PDF files.
 - **File Size Limit** — Maximum 25 MB per PDF, with no fixed page-count limit.
 - **Local Processing** — Run the application on your own computer without a cloud service.
@@ -127,6 +128,7 @@ Open your browser at:
 2. Click **Convert to Markdown**.
 3. Review the Markdown preview.
 4. Click **Download Markdown (.md)**.
+5. Click **Convert Another PDF** to clear the current file and result, then upload the next PDF.
 
 Only one PDF can be uploaded at a time.
 
@@ -170,11 +172,17 @@ Start the Streamlit application first, then execute in a separate terminal:
 | TC-03 | PDF-to-Markdown conversion |
 | TC-04 | Markdown file download |
 | TC-05 | Unsupported file rejection |
-| TC-06 | PDF exceeding 25 MB |
+| TC-06 | PDF exceeding 25 MB rejected by Streamlit's upload limit |
 | TC-07 | Corrupted PDF validation |
 | TC-08 | Upload replacement and result reset |
+| TC-09 | "Convert Another PDF" appears only after successful conversion |
+| TC-10 | "Convert Another PDF" hidden after failed conversion |
+| TC-11 | "Convert Another PDF" resets the page and a second PDF converts |
+| TC-12 | Re-uploading the same PDF after reset starts clean |
 
-**Latest reported local execution:** 8 passed, 0 failed, 0 skipped.
+**Latest reported local execution:** 12 passed, 0 failed, 0 skipped.
+
+Oversized PDFs are rejected in the browser by Streamlit (`maxUploadSize = 25` in `.streamlit/config.toml`). The app's own 25 MB check in `app.py` remains as a second layer of protection.
 
 Test reports and failure artifacts are generated locally and excluded from version control.
 

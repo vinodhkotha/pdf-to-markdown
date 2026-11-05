@@ -38,11 +38,23 @@ st.write("Convert your PDF documents into clean Markdown using Microsoft's MarkI
 
 st.divider()
 
+# Changing this key gives Streamlit a fresh, empty file uploader widget.
+if "uploader_key" not in st.session_state:
+    st.session_state.uploader_key = 0
+
+
+def reset_for_next_pdf() -> None:
+    st.session_state.uploader_key += 1
+    st.session_state.file_identity = None
+    st.session_state.markdown_result = None
+
+
 # Upload one PDF
 uploaded_file = st.file_uploader(
     "Upload your PDF",
     type=["pdf"],
-    accept_multiple_files=False
+    accept_multiple_files=False,
+    key=f"pdf_uploader_{st.session_state.uploader_key}"
 )
 
 # Reset previous result when the uploaded file changes
@@ -115,6 +127,13 @@ if uploaded_file is not None:
             mime="text/markdown",
             use_container_width=True
         )
+
+        if st.button(
+            "Convert Another PDF",
+            use_container_width=True
+        ):
+            reset_for_next_pdf()
+            st.rerun()
 
 else:
     st.session_state.file_identity = None
